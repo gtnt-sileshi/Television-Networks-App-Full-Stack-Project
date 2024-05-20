@@ -1,7 +1,7 @@
 // frontend/src/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Typography, Container, Grid, Box, InputAdornment } from '@mui/material';
+import { Button, TextField, Typography, Container, Box, InputAdornment, useMediaQuery } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
@@ -11,19 +11,26 @@ const theme = createTheme();
 const styles = {
   root: {
     display: 'flex',
-    width: '100%',
-    height: '90vh',
     justifyContent: 'center',
     alignItems: 'center',
+    minHeight: '100vh',
+    padding: theme.spacing(2),
+    backgroundColor: '#f4f4f4',
   },
   container: {
     display: 'flex',
-    width: '1200px',
+    width: '100%',
+    maxWidth: '1200px',
     height: '80%',
-    border: '2px solid #000', // Border for enclosing the content
+    border: '2px solid #000',
     borderRadius: '8px',
     overflow: 'hidden',
     backgroundColor: '#fff',
+    flexDirection: 'row',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      height: 'auto',
+    },
   },
   imageContainer: {
     width: '50%',
@@ -32,25 +39,38 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      padding: theme.spacing(4),
+    },
   },
   logo: {
     color: '#ffffff',
     fontSize: '4rem',
     marginBottom: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '2.5rem',
+    },
   },
   image: {
     width: '150px',
     marginBottom: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      width: '100px',
+    },
   },
   formContainer: {
     width: '50%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      padding: theme.spacing(4),
+    },
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
-    padding: theme.spacing(4),
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -60,7 +80,7 @@ const styles = {
   },
   button: {
     margin: theme.spacing(3, 0, 2),
-    backgroundColor: '#001F54', // Dark blue color for the button
+    backgroundColor: '#001F54',
     color: 'white',
     '&:hover': {
       backgroundColor: '#001F54',
