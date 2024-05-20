@@ -14,8 +14,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    padding: theme.spacing(2),
-    backgroundColor: '#f4f4f4',
+    padding: theme.spacing(2)
   },
   container: {
     display: 'flex',
