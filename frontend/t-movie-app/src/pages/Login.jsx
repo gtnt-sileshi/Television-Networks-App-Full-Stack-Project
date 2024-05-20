@@ -1,7 +1,7 @@
 // frontend/src/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Typography, Container, Grid } from '@mui/material';
+import { Button, TextField, Typography, Container, Grid, } from '@mui/material';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -13,6 +13,8 @@ function Login() {
     // For simplicity, let's just navigate to a different page upon login
     navigate('/dashboard');
   };
+
+  // return <h1>Hello Login</h1>
 
   return (
     <Container component="main" maxWidth="xs">

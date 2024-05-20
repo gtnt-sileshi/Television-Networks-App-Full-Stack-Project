@@ -1,8 +1,10 @@
 // frontend/src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Login';
-import Dashboard from './Dashboard'; // Create Dashboard component
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard'; // Create Dashboard component
+
+import './App.css'
 
 function App() {
   return (
