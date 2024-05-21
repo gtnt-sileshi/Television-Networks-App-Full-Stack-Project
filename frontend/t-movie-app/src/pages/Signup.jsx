@@ -4,23 +4,16 @@ import { Button, TextField, Typography, Container, Box, InputAdornment } from '@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
+import { userSchema } from '../validation';
 
 const theme = createTheme();
 
 const styles = {
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    padding: theme.spacing(2),
-    backgroundColor: '#f4f4f4',
-  },
   container: {
     display: 'flex',
-    width: '100%', // Increase width to make it larger
-    maxWidth: '1500px', // Increase max-width for larger screens
-    height: '85%', // Increase height
+    width: '100%',
+    maxWidth: '1600px',
+    height: '90%',
     // border: '2px solid #000',
     borderRadius: '8px',
     overflow: 'hidden',
@@ -52,10 +45,10 @@ const styles = {
     },
   },
   image: {
-    width: '200px', // Increase image size
+    width: '200px',
     marginBottom: theme.spacing(2),
     [theme.breakpoints.down('sm')]: {
-      width: '100px',
+      width: '150px',
     },
   },
   formContainer: {
@@ -76,11 +69,12 @@ const styles = {
   },
   textField: {
     margin: theme.spacing(2, 0),
-    fontSize: '1.2rem', // Increase font size
+    [theme.breakpoints.up('md')]: {
+      fontSize: '1.2rem',
+    },
   },
   button: {
     margin: theme.spacing(3, 0, 2),
-    padding: theme.spacing(1.5), // Increase button padding
     backgroundColor: '#001F54',
     color: 'white',
     '&:hover': {
@@ -92,21 +86,36 @@ const styles = {
   },
 };
 
-function Login({ onLogin }) {
+function Signup({ onSignup }) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleLogin = (event) => {
+  const handleSignup = (event) => {
     event.preventDefault();
-    navigate('/dashboard');
-    if (onLogin) {
-      onLogin(phoneNumber, password);
+
+    const formData = { phoneNumber, password, confirmPassword };
+    const result = userSchema.safeParse(formData);
+
+    if (result.success) {
+      navigate('/dashboard');
+      if (onSignup) {
+        onSignup(phoneNumber, password);
+      }
+    } else {
+      const newErrors = {};
+      result.error.errors.forEach((error) => {
+        newErrors[error.path[0]] = error.message;
+      });
+      setErrors(newErrors);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
+      <Box sx={styles.root}>
         <Box sx={styles.container}>
           <Box sx={styles.imageContainer}>
             <img src="logo.png" alt="Logo" style={styles.image} />
@@ -118,9 +127,9 @@ function Login({ onLogin }) {
             <Container component="main" maxWidth="xs">
               <Box sx={styles.form}>
                 <Typography variant="h4" gutterBottom>
-                  LOGIN
+                  SIGN UP
                 </Typography>
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleSignup}>
                   <TextField
                     variant="outlined"
                     required
@@ -128,6 +137,8 @@ function Login({ onLogin }) {
                     label="Phone number"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
+                    error={!!errors.phoneNumber}
+                    helperText={errors.phoneNumber}
                     sx={styles.textField}
                     InputProps={{
                       startAdornment: (
@@ -145,6 +156,27 @@ function Login({ onLogin }) {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    error={!!errors.password}
+                    helperText={errors.password}
+                    sx={styles.textField}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    label="Confirm Password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    error={!!errors.confirmPassword}
+                    helperText={errors.confirmPassword}
                     sx={styles.textField}
                     InputProps={{
                       startAdornment: (
@@ -160,18 +192,19 @@ function Login({ onLogin }) {
                     variant="contained"
                     sx={styles.button}
                   >
-                    Login
+                    Sign Up
                   </Button>
                 </form>
                 <Typography sx={styles.signupLink}>
-                  Don't have an account? <Link to="/signup">Please signup</Link>
+                  Already have an account? <Link to="/">Please login</Link>
                 </Typography>
               </Box>
             </Container>
           </Box>
         </Box>
+      </Box>
     </ThemeProvider>
   );
 }
 
-export default Login;
+export default Signup;
