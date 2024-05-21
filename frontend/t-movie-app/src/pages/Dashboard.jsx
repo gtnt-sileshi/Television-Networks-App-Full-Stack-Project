@@ -1,70 +1,83 @@
-// frontend/src/Dashboard.js
-import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent, IconButton, colors } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import TvIcon from '@mui/icons-material/Tv';
-import MovieIcon from '@mui/icons-material/Movie';
-import PersonIcon from '@mui/icons-material/Person';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import React from "react";
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  IconButton,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import TvIcon from "@mui/icons-material/Tv";
+import MovieIcon from "@mui/icons-material/Movie";
+import PersonIcon from "@mui/icons-material/Person";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { PieChart, LineChart } from "@mui/x-charts";
 
-const theme = createTheme();
+const theme = createTheme({
+  typography: {
+    htmlFontSize: 20, // Adjust the base font size to 20px (125% of the default 16px)
+  },
+});
 
 const styles = {
   root: {
-    display: 'flex',
-    height: '100vh',
-    backgroundColor: '#f4f4f4',
+    display: "flex",
+    height: "100vh",
+    backgroundColor: "#f4f4f4",
+    flexGrow: "auto",
   },
   sidebar: {
-    width: '250px',
-    backgroundColor: '#fff',
-    color: '#001F54',
-    display: 'flex',
-    flexDirection: 'column',
+    width: "250px",
+    backgroundColor: "#fff",
+    color: "#001F54",
+    display: "flex",
+    flexDirection: "column",
     padding: theme.spacing(2),
-    borderRight: '1px solid #ddd',
+    borderRight: "1px solid #ddd",
   },
   sidebarHeader: {
-    marginBottom: theme.spacing(2),
-
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
+    display: "flex",
+    alignItems: "center",
+    padding: theme.spacing(2),
+    borderBottom: "1px solid #ddd",
   },
   navItem: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     margin: theme.spacing(2, 0),
-    color: '#001F54',
-    textDecoration: 'none',
+    color: "#001F54",
+    textDecoration: "none",
   },
   navIcon: {
     marginRight: theme.spacing(1),
   },
   content: {
     flexGrow: 1,
-    overflowY: 'auto',
+    overflowY: "auto",
     padding: theme.spacing(3),
   },
-  topBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: theme.spacing(3),
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: theme.spacing(2),
+    backgroundColor: "#fff",
+    borderBottom: "1px solid #ddd",
   },
   userActions: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   card: {
     marginBottom: theme.spacing(3),
   },
   cardContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 };
 
@@ -74,8 +87,10 @@ const Dashboard = () => {
       <Box sx={styles.root}>
         <Box sx={styles.sidebar}>
           <Box sx={styles.sidebarHeader}>
-            <img src="logo.png" alt="Logo" sx={{ }} style={{ width: '100px' }} />
-            <Typography variant="h6" sx={{ marginTop: '20%', color: '#001F54' }}>T-Movie</Typography>
+            <img src="logo.png" alt="Logo" style={{ width: "100px" }} />
+            <Typography variant="h6" sx={{ color: "#001F54", marginLeft: theme.spacing(1) }}>
+              T-Movie
+            </Typography>
           </Box>
           <Link to="/dashboard" style={styles.navItem}>
             <DashboardIcon sx={styles.navIcon} />
@@ -91,7 +106,7 @@ const Dashboard = () => {
           </Link>
         </Box>
         <Box sx={styles.content}>
-          <Box sx={styles.topBar}>
+          <Box sx={styles.header}>
             <Typography variant="h4">Dashboard</Typography>
             <Box sx={styles.userActions}>
               <IconButton>
@@ -108,7 +123,9 @@ const Dashboard = () => {
                 <CardContent sx={styles.cardContent}>
                   <Box>
                     <Typography variant="h6">System User</Typography>
-                    <Typography variant="body2" color="textSecondary">+12% This Month</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      +12% This Month
+                    </Typography>
                   </Box>
                   <PersonIcon />
                   <Typography variant="h6">37</Typography>
@@ -120,7 +137,9 @@ const Dashboard = () => {
                 <CardContent sx={styles.cardContent}>
                   <Box>
                     <Typography variant="h6">Program</Typography>
-                    <Typography variant="body2" color="textSecondary">+12% This Month</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      +12% This Month
+                    </Typography>
                   </Box>
                   <MovieIcon />
                   <Typography variant="h6">37</Typography>
@@ -132,7 +151,9 @@ const Dashboard = () => {
                 <CardContent sx={styles.cardContent}>
                   <Box>
                     <Typography variant="h6">Channel</Typography>
-                    <Typography variant="body2" color="textSecondary">+12% This Month</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      +12% This Month
+                    </Typography>
                   </Box>
                   <TvIcon />
                   <Typography variant="h6">37</Typography>
@@ -145,18 +166,36 @@ const Dashboard = () => {
               Program on Category
             </Typography>
             <Box>
-              {/* Placeholder for Pie Chart */}
-              <img src="pie-chart.png" alt="Pie Chart" style={{ width: '100%' }} />
+              <PieChart
+                series={[
+                  {
+                    data: [
+                      { category: "Action", value: 25 },
+                      { category: "Comedy", value: 40 },
+                      { category: "Drama", value: 20 },
+                      { category: "Thriller", value: 15 },
+                    ],
+                  },
+                ]}
+                height={400}
+                width={600}
+              />
             </Box>
           </Box>
           <Box mt={4}>
             <Typography variant="h5" gutterBottom>
               Program with Type
             </Typography>
-            <Box>
-              {/* Placeholder for Line Chart */}
-              <img src="line-chart.png" alt="Line Chart" style={{ width: '100%' }} />
-            </Box>
+            <LineChart
+              xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+              series={[
+                {
+                  data: [2, 5.5, 2, 8.5, 1.5, 5],
+                },
+              ]}
+              width={500}
+              height={300}
+            />
           </Box>
         </Box>
       </Box>
